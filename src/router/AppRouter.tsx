@@ -31,4 +31,8 @@ export const router = createBrowserRouter([
     path: '*',
     element: <NotFoundPage />,
   },
-]);
+],
+  {
+    basename: '/jh0-0y-blog',
+  }
+);
