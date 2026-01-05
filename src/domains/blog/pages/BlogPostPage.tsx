@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
-import type { Post, AdjacentPosts } from '../types';
+import type { Post, AdjacentPosts, TableOfContentsSection } from '../types';
+import { extractTableOfContents } from '../utils';
 import styles from './BlogPostPage.module.css';
 
 // TODO: 실제 데이터로 교체
@@ -12,8 +13,7 @@ const MOCK_POST: Post = {
   date: '2025-01-03',
   readTime: '8분',
   status: 'public',
-  content: `
-## 들어가며
+  content: `## 들어가며
 
 실시간 코딩 교육 플랫폼을 개발하면서 WebSocket을 활용한 실시간 통신을 구현했습니다. 
 이 글에서는 STOMP 프로토콜을 활용한 구현 과정과 겪었던 문제들을 공유합니다.
@@ -62,8 +62,7 @@ heartbeat 간격을 적절히 설정하고, reconnect 로직을 추가했습니�
 ## 마치며
 
 WebSocket 구현은 처음이라 많이 헤맸지만, 실시간 통신의 원리를 이해하는 좋은 경험이었습니다. 
-다음에는 Redis Pub/Sub을 활용한 다중 서버 환경에서의 WebSocket 처리를 다뤄보겠습니다.
-    `
+다음에는 Redis Pub/Sub을 활용한 다중 서버 환경에서의 WebSocket 처리를 다뤄보겠습니다.`,
 };
 
 // TODO: 실제 데이터로 교체
@@ -86,6 +85,11 @@ export const BlogPostPage = () => {
   // TODO: id로 실제 데이터 조회
   const post = MOCK_POST;
   const adjacent = MOCK_ADJACENT;
+
+  // 목차 동적 추출
+  const sections: TableOfContentsSection[] = post.content 
+    ? extractTableOfContents(post.content) 
+    : [];
 
   return (
     <div className={styles.page}>
@@ -126,11 +130,11 @@ export const BlogPostPage = () => {
       </header>
 
       {/* 목차 */}
-      {post.content?.sections && post.content.sections.length > 0 && (
+      {sections.length > 0 && (
         <nav className={styles.toc}>
           <h2 className={styles.tocTitle}>목차</h2>
           <ul className={styles.tocList}>
-            {post.content.sections.map((section) => (
+            {sections.map((section) => (
               <li
                 key={section.id}
                 className={styles.tocItem}
@@ -147,7 +151,7 @@ export const BlogPostPage = () => {
       <article className={styles.content}>
         <div className={styles.markdown}>
           {/* TODO: 실제로는 마크다운 파서 사용 */}
-          <div dangerouslySetInnerHTML={{ __html: formatContent(post.content?.body || '') }} />
+          <div dangerouslySetInnerHTML={{ __html: formatContent(post.content || '') }} />
         </div>
       </article>
 
@@ -184,8 +188,8 @@ export const BlogPostPage = () => {
 // TODO: 실제로는 마크다운 라이브러리 사용
 function formatContent(content: string): string {
   return content
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 id="$1">$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3 id="$1">$1</h3>')
     .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\n\n/g, '</p><p>');

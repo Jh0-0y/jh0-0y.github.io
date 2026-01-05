@@ -1,7 +1,5 @@
 import { BlogLayout } from '@/domains/blog/layouts';
-import { BlogHomePage } from '@/domains/blog/pages';
-import { BlogPostPage } from '@/domains/blog/pages/BlogPostPage';
-import { BlogWritePage } from '@/domains/blog/pages/BlogWritePage';
+import { BlogHomePage, BlogPostPage, BlogWritePage } from '@/domains/blog/pages';
 import { NotFoundPage } from '@/pages/notfound';
 import { createBrowserRouter } from 'react-router-dom';
 

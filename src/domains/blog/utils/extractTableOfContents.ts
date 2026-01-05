@@ -8,16 +8,16 @@ import type { TableOfContentsSection } from '../types';
 export function extractTableOfContents(markdown: string): TableOfContentsSection[] {
   const sections: TableOfContentsSection[] = [];
   const regex = /^(#{2,3})\s+(.+)$/gm;
-  
+
   let match;
   while ((match = regex.exec(markdown)) !== null) {
     const level = match[1].length as 2 | 3;
     const title = match[2].trim();
     const id = generateSlug(title);
-    
+
     sections.push({ id, title, level });
   }
-  
+
   return sections;
 }
 

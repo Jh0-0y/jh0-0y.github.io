@@ -1,0 +1,1 @@
+export { extractTableOfContents } from './extractTableOfContents';
