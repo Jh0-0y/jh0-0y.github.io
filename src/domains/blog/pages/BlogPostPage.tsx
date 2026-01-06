@@ -8,11 +8,11 @@ const MOCK_POST: Post = {
   id: 1,
   title: 'Spring Boot에서 WebSocket 실시간 통신 구현하기',
   excerpt: 'STOMP 프로토콜을 활용한 실시간 양방향 통신 구현 과정과 트러블슈팅 경험을 공유합니다.',
-  category: 'Study',
+  category: 'STUDY',
   tags: ['Spring Boot', 'WebSocket', 'STOMP'],
   date: '2025-01-03',
   readTime: '8분',
-  status: 'public',
+  status: 'PUBLIC',
   content: `## 들어가며
 
 실시간 코딩 교육 플랫폼을 개발하면서 WebSocket을 활용한 실시간 통신을 구현했습니다. 
@@ -71,7 +71,7 @@ const MOCK_ADJACENT: AdjacentPosts = {
     id: 2,
     title: 'Redis를 활용한 세션 클러스터링',
     excerpt: '',
-    category: 'Architecture',
+    category: 'ARCHITECTURE',
     tags: [],
     date: '2024-12-28',
     readTime: '6분',

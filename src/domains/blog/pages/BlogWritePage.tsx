@@ -6,10 +6,10 @@ import styles from './BlogWritePage.module.css';
 
 // 카테고리 옵션
 const CATEGORIES: { value: PostCategory; label: string }[] = [
-  { value: 'Study', label: 'Study' },
-  { value: 'Architecture', label: 'Architecture' },
-  { value: 'Troubleshooting', label: 'Troubleshooting' },
-  { value: 'Essay', label: 'Essay' },
+  { value: 'STUDY', label: 'Study' },
+  { value: 'ARCHITECTURE', label: 'Architecture' },
+  { value: 'TROUBLESHOOTING', label: 'Troubleshooting' },
+  { value: 'ESSAY', label: 'Essay' },
 ];
 
 // TODO: 수정 모드일 때 기존 데이터 로드
@@ -86,10 +86,10 @@ export const BlogWritePage = () => {
           {/* 공개/비공개 토글 */}
           <button
             type="button"
-            onClick={() => updateField('status', form.status === 'public' ? 'private' : 'public')}
-            className={`${styles.statusToggle} ${form.status === 'public' ? styles.public : ''}`}
+            onClick={() => updateField('status', form.status === 'PUBLIC' ? 'PRIVATE' : 'PUBLIC')}
+            className={`${styles.statusToggle} ${form.status === 'PUBLIC' ? styles.public : ''}`}
           >
-            {form.status === 'public' ? (
+            {form.status === 'PUBLIC' ? (
               <>
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
