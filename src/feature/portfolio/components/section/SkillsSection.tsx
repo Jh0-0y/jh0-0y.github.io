@@ -2,7 +2,7 @@ import { FiCode, FiLayout, FiServer, FiDatabase, FiCloud, FiTool } from 'react-i
 
 import styles from './SkillsSection.module.css';
 import type { SkillGroup } from '../../types';
-import { SkillBadge } from '@/components';
+import { SkillBadge } from '@/components/skillbadge';
 
 interface SkillsSectionProps {
   data: SkillGroup[];

@@ -3,7 +3,7 @@ import { FiGithub, FiExternalLink, FiFileText, FiUsers, FiUser } from 'react-ico
 
 import styles from './ProjectsSection.module.css';
 import type { ProjectData } from '../../types';
-import { SkillBadge } from '@/components';
+import { SkillBadge } from '@/components/skillbadge';
 
 interface ProjectsSectionProps {
   data: ProjectData[];
