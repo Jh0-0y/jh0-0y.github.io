@@ -2,7 +2,12 @@ import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getErrorMessage } from '@/services/core/api.error';
 import { postApi } from '../api/post.api';
-import type { UsePostDeleteReturn } from './usePostDelete.types';
+
+export interface UsePostDeleteReturn {
+  isLoading: boolean;
+  error: string | null;
+  deletePost: (postId: number) => Promise<boolean>;
+}
 
 export const usePostDelete = (): UsePostDeleteReturn => {
   const navigate = useNavigate();

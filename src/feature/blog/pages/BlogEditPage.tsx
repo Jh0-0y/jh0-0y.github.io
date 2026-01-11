@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { usePostCreate } from '../hooks/usePostCreate';
+import { Link, useParams, Navigate } from 'react-router-dom';
+import { usePostEdit } from '../hooks/usePostEdit';
 import { useStacks } from '../hooks/useStacks';
 import { STACK_GROUP_LABELS, STACK_GROUP_ORDER } from '../types/stack.enums';
 import type { PostType } from '../types/post.enums';
 import { MarkdownEditor } from '../components';
-import styles from './BlogWritePage.module.css';
+import styles from './BlogEditPage.module.css';
 
 const POST_TYPES: { value: PostType; label: string }[] = [
   { value: 'CORE', label: 'Core' },
@@ -14,10 +14,15 @@ const POST_TYPES: { value: PostType; label: string }[] = [
   { value: 'ESSAY', label: 'Essay' },
 ];
 
-export const BlogWritePage = () => {
+export const BlogEditPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const postId = id ? parseInt(id, 10) : 0;
+
   const {
     form,
     isLoading,
+    isFetching,
+    isDeleting,
     error,
     fieldErrors,
     updateField,
@@ -25,10 +30,17 @@ export const BlogWritePage = () => {
     removeTag,
     toggleStatus,
     submit,
-  } = usePostCreate();
+    deletePost,
+  } = usePostEdit(postId);
 
   const { groupedStacks, isLoading: isStacksLoading } = useStacks();
   const [tagInput, setTagInput] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // postId가 없으면 홈으로 리다이렉트
+  if (!postId) {
+    return <Navigate to="/" replace />;
+  }
 
   // 스택 토글
   const handleStackToggle = (stackName: string) => {
@@ -69,18 +81,50 @@ export const BlogWritePage = () => {
     submit();
   };
 
+  // 삭제 확인
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  // 삭제 실행
+  const handleDeleteConfirm = () => {
+    deletePost();
+  };
+
+  // 삭제 취소
+  const handleDeleteCancel = () => {
+    setShowDeleteConfirm(false);
+  };
+
+  // 로딩 중
+  if (isFetching) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loading}>게시글을 불러오는 중...</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.page}>
       {/* 헤더 */}
       <header className={styles.header}>
-        <Link to="/" className={styles.backLink}>
+        <Link to={`/post/${postId}`} className={styles.backLink}>
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
           </svg>
           <span>취소</span>
         </Link>
-        <h1 className={styles.pageTitle}>새 글 작성</h1>
+        <h1 className={styles.pageTitle}>글 수정</h1>
         <div className={styles.headerActions}>
+          {/* 삭제 버튼 */}
+          <button type="button" onClick={handleDeleteClick} className={styles.deleteButton}>
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            삭제
+          </button>
+          {/* 공개/비공개 토글 */}
           <button
             type="button"
             onClick={toggleStatus}
@@ -105,6 +149,29 @@ export const BlogWritePage = () => {
           </button>
         </div>
       </header>
+
+      {/* 삭제 확인 모달 */}
+      {showDeleteConfirm && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h2 className={styles.modalTitle}>게시글 삭제</h2>
+            <p className={styles.modalMessage}>정말로 이 게시글을 삭제하시겠습니까?</p>
+            <div className={styles.modalActions}>
+              <button type="button" onClick={handleDeleteCancel} className={styles.modalCancelButton}>
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteConfirm}
+                className={styles.modalDeleteButton}
+                disabled={isDeleting}
+              >
+                {isDeleting ? '삭제 중...' : '삭제'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 에러 메시지 */}
       {error && <div className={styles.errorMessage}>{error}</div>}
@@ -241,11 +308,11 @@ export const BlogWritePage = () => {
 
         {/* 하단 액션 */}
         <div className={styles.actions}>
-          <Link to="/" className={styles.cancelButton}>
+          <Link to={`/post/${postId}`} className={styles.cancelButton}>
             취소
           </Link>
           <button type="submit" className={styles.submitButton} disabled={isLoading}>
-            {isLoading ? '저장 중...' : '발행하기'}
+            {isLoading ? '저장 중...' : '수정하기'}
           </button>
         </div>
       </form>

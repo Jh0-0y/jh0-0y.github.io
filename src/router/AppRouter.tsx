@@ -2,12 +2,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProtectedRoute, GuestRoute } from '@/router/guards';
 
 import { BlogLayout } from '@/feature/blog/layouts/BlogLayout';
-import { BlogHomePage, BlogPostPage, BlogWritePage } from '@/feature/blog/pages';
+import { BlogHomePage, BlogPostPage, BlogWritePage, BlogEditPage } from '@/feature/blog/pages';
 
 import { LoginPage, SignUpPage } from '@/pages/auth';
-import { ProfilePage } from '@/feature/profile/pages';
+import { ProfilePage } from '@/feature/portfolio/pages';
 
 import { NotFoundPage } from '@/pages/notfound';
+import { ProjectDetailPage } from '@/feature/portfolio/pages/ProjectDetailPage';
 
 export const AppRouter = () => (
   <BrowserRouter basename="/">
@@ -23,16 +24,16 @@ export const AppRouter = () => (
             <BlogWritePage />
           </ProtectedRoute>
         } />
-        <Route path="edit/:id" element={
+        <Route path="post/:id/edit" element={
           <ProtectedRoute>
-            <BlogWritePage />
+            <BlogEditPage />
           </ProtectedRoute>
         } />
       </Route>
 
-      {/* 프로필 (공개) */}
-      <Route path="/profile" element={<ProfilePage />} />
-      {/* <Route path="/project/:id" element={<ProjectDetailPage />} /> */}
+      {/* 포트폴리오 (공개) */}
+      <Route path="/portfolio" element={<ProfilePage />} />
+      <Route path="/portfolio/project/:id" element={<ProjectDetailPage />} />
 
       {/* 로그인/회원가입 (비로그인만) */}
       <Route path="/login" element={

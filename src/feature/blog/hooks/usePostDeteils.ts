@@ -2,9 +2,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { getErrorMessage } from '@/services/core/api.error';
 import { postApi } from '../api/post.api';
 import type { PostDetail } from '../api/post.response';
-import type { UsePostReturn } from './usePost.types';
 
-export const usePost = (postId: number | undefined): UsePostReturn => {
+export interface UsePostReturn {
+  post: PostDetail | null;
+  isLoading: boolean;
+  error: string | null;
+  refetch: () => Promise<void>;
+}
+
+export const usePostDeteils = (postId: number | undefined): UsePostReturn => {
   const [post, setPost] = useState<PostDetail | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

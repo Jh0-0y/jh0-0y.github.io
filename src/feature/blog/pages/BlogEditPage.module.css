@@ -53,6 +53,28 @@
   gap: var(--spacing-3);
 }
 
+/* 삭제 버튼 */
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  background-color: rgba(239, 68, 68, 0.1);
+  transition: all 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+.deleteButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 /* 공개/비공개 토글 */
 .statusToggle {
   display: flex;
@@ -78,6 +100,76 @@
 .statusToggle svg {
   width: 1rem;
   height: 1rem;
+}
+
+/* 삭제 확인 모달 */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  width: 100%;
+  max-width: 400px;
+  margin: var(--spacing-4);
+}
+
+.modalTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.modalMessage {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-6);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+}
+
+.modalCancelButton {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-base);
+  transition: all 0.2s;
+}
+
+.modalCancelButton:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+.modalDeleteButton {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: white;
+  background-color: var(--color-error);
+  border-radius: var(--radius-base);
+  transition: all 0.2s;
+}
+
+.modalDeleteButton:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+.modalDeleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* 에러 메시지 */
@@ -416,6 +508,11 @@
     margin-bottom: var(--spacing-2);
   }
 
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .titleInput {
     font-size: var(--font-size-xl);
     padding: var(--spacing-3);
@@ -438,5 +535,18 @@
   .submitButton {
     width: 100%;
     text-align: center;
+  }
+
+  .modal {
+    margin: var(--spacing-4);
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .modalCancelButton,
+  .modalDeleteButton {
+    width: 100%;
   }
 }

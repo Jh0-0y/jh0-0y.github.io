@@ -1,1 +1,1 @@
-export { useDarkMode, useThemeStore } from './useDarkMode';
+export { useDarkMode } from './darkmode/useDarkMode';

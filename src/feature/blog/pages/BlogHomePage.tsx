@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePosts } from '../hooks/usePosts';
-import { formatDate, calculateReadTime } from '../utils';
+import { formatDate } from '../utils';
 import styles from './BlogHomePage.module.css';
 
 export const BlogHomePage = () => {
@@ -79,8 +79,6 @@ export const BlogHomePage = () => {
                       <span className={styles.author}>정현영</span>
                       <span className={styles.dot}>·</span>
                       <span>{formatDate(post.createdAt)}</span>
-                      <span className={styles.dot}>·</span>
-                      <span>{calculateReadTime(post.excerpt)}</span>
                     </div>
                   </div>
               </Link>

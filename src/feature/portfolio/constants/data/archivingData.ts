@@ -14,7 +14,7 @@ export const archivingData: ArchivingItem[] = [
   {
     type: 'blog',
     title: 'Tech Blog',
-    url: 'https://your-blog.com',
+    url: 'https://jh0-0y.github.io',
     description: '기술 블로그',
   },
 ];

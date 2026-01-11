@@ -19,11 +19,6 @@ const getIconUrl = (config: BadgeConfig): string | null => {
     return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${config.deviconSlug}/${config.deviconSlug}-original.svg`;
   }
 
-  // 3. 로컬 SVG
-  if (config.iconPath) {
-    return config.iconPath;
-  }
-
   return null;
 };
 

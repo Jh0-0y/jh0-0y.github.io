@@ -6,7 +6,7 @@ export interface CreatePostRequest {
   postType: PostType;
   content: string;
   status?: PostStatus;
-  stacks: string[];
+  stacks?: string[];
   tags?: string[];
 }
 
@@ -16,6 +16,6 @@ export interface UpdatePostRequest {
   postType: PostType;
   content: string;
   status?: PostStatus;
-  stacks: string[];
+  stacks?: string[];
   tags?: string[];
 }

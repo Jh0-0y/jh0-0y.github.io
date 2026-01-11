@@ -3,7 +3,33 @@ import { useSearchParams } from 'react-router-dom';
 import { getErrorMessage } from '@/services/core/api.error';
 import { postApi } from '../api/post.api';
 import type { PostListItem } from '../api/post.response';
-import type { PostsFilter, Pagination, UsePostsReturn } from './usePosts.types';
+import type { PostType } from '../types';
+
+export interface PostsFilter {
+  postType?: PostType;
+  stack?: string;
+  keyword?: string;
+}
+
+export interface Pagination {
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
+export interface UsePostsReturn {
+  posts: PostListItem[];
+  pagination: Pagination;
+  isLoading: boolean;
+  error: string | null;
+  filter: PostsFilter;
+  setFilter: (filter: PostsFilter) => void;
+  setPage: (page: number) => void;
+  refetch: () => Promise<void>;
+}
 
 const DEFAULT_PAGE_SIZE = 10;
 

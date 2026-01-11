@@ -9,18 +9,6 @@ export const formatDate = (dateString: string): string => {
 };
 
 /**
- * 콘텐츠 기반 읽기 시간 계산
- * - 한국어 기준 분당 약 500자
- */
-export const calculateReadTime = (content: string | null | undefined): string => {
-  if (!content) return '1분';
-  
-  const charCount = content.length;
-  const minutes = Math.ceil(charCount / 500);
-  return `${minutes}분`;
-};
-
-/**
  * 마크다운 콘텐츠에서 목차 추출
  */
 export const extractTableOfContents = (content: string): TableOfContentsSection[] => {

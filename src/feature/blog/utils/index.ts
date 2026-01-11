@@ -1,6 +1,5 @@
 export {
   formatDate,
-  calculateReadTime,
   extractTableOfContents,
   generateSlug,
 } from './blog.utils';

@@ -1,64 +1,58 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getErrorMessage, getFieldErrors } from '@/services/core/api.error';
+import { useToast } from '@/utils/toast/useToast';
 import { postApi } from '../api/post.api';
-import type { CreatePostRequest, UpdatePostRequest } from '../api/post.request';
-import type { PostForm, UsePostWriteReturn } from './usePostWrite.types';
+import type { CreatePostRequest } from '../api/post.request';
+import type { PostType, PostStatus } from '../types/post.enums';
 
-const INITIAL_FORM: PostForm = {
+export interface PostCreateForm {
+  title: string;
+  excerpt: string;
+  postType: PostType;
+  content: string;
+  status: PostStatus;
+  stacks: string[];
+  tags: string[];
+}
+
+export interface UsePostCreateReturn {
+  form: PostCreateForm;
+  isLoading: boolean;
+  error: string | null;
+  fieldErrors: Record<string, string> | null;
+  updateField: <K extends keyof PostCreateForm>(key: K, value: PostCreateForm[K]) => void;
+  addTag: (tag: string) => void;
+  removeTag: (tag: string) => void;
+  toggleStatus: () => void;
+  submit: () => Promise<void>;
+  reset: () => void;
+}
+
+const INITIAL_FORM: PostCreateForm = {
   title: '',
   excerpt: '',
   postType: 'CORE',
   content: '',
-  status: 'PRIVATE',
+  status: 'PUBLIC',
   stacks: [],
   tags: [],
 };
 
-export const usePostWrite = (postId?: number): UsePostWriteReturn => {
+export const usePostCreate = (): UsePostCreateReturn => {
   const navigate = useNavigate();
-  const isEditMode = Boolean(postId);
+  const toast = useToast();
 
-  const [form, setForm] = useState<PostForm>(INITIAL_FORM);
+  const [form, setForm] = useState<PostCreateForm>(INITIAL_FORM);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string> | null>(null);
 
-  // 수정 모드: 기존 데이터 로드
-  useEffect(() => {
-    if (!postId) return;
-
-    const fetchPost = async () => {
-      setIsFetching(true);
-      try {
-        const response = await postApi.getPost(postId);
-        if (response.success) {
-          const post = response.data;
-          setForm({
-            title: post.title,
-            excerpt: post.excerpt,
-            postType: post.postType,
-            content: post.content,
-            status: post.status,
-            stacks: post.stacks,
-            tags: post.tags,
-          });
-        }
-      } catch (err) {
-        setError(getErrorMessage(err));
-      } finally {
-        setIsFetching(false);
-      }
-    };
-
-    fetchPost();
-  }, [postId]);
-
   // 필드 업데이트
   const updateField = useCallback(
-    <K extends keyof PostForm>(key: K, value: PostForm[K]) => {
+    <K extends keyof PostCreateForm>(key: K, value: PostCreateForm[K]) => {
       setForm((prev) => ({ ...prev, [key]: value }));
+      // 해당 필드 에러 제거
       if (fieldErrors?.[key]) {
         setFieldErrors((prev) => {
           if (!prev) return null;
@@ -97,6 +91,13 @@ export const usePostWrite = (postId?: number): UsePostWriteReturn => {
     }));
   }, []);
 
+  // 폼 초기화
+  const reset = useCallback(() => {
+    setForm(INITIAL_FORM);
+    setError(null);
+    setFieldErrors(null);
+  }, []);
+
   // 제출
   const submit = useCallback(async () => {
     setIsLoading(true);
@@ -104,7 +105,7 @@ export const usePostWrite = (postId?: number): UsePostWriteReturn => {
     setFieldErrors(null);
 
     try {
-      const request: CreatePostRequest | UpdatePostRequest = {
+      const request: CreatePostRequest = {
         title: form.title,
         excerpt: form.excerpt,
         postType: form.postType,
@@ -114,35 +115,32 @@ export const usePostWrite = (postId?: number): UsePostWriteReturn => {
         tags: form.tags,
       };
 
-      let response;
-      if (isEditMode && postId) {
-        response = await postApi.updatePost(postId, request);
-      } else {
-        response = await postApi.createPost(request);
-      }
+      const response = await postApi.createPost(request);
 
       if (response.success) {
+        toast.success('게시글이 발행되었습니다');
         navigate(`/post/${response.data.id}`);
       }
     } catch (err) {
-      setError(getErrorMessage(err));
+      const message = getErrorMessage(err);
+      setError(message);
       setFieldErrors(getFieldErrors(err));
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
-  }, [form, isEditMode, postId, navigate]);
+  }, [form, navigate, toast]);
 
   return {
     form,
     isLoading,
-    isFetching,
     error,
     fieldErrors,
     updateField,
-    setForm,
     addTag,
     removeTag,
-    submit,
     toggleStatus,
+    submit,
+    reset,
   };
 };

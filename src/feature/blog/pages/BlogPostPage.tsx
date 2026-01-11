@@ -1,14 +1,13 @@
 import { useParams, Link } from 'react-router-dom';
-import { usePost } from '../hooks/usePost';
-import { extractTableOfContents, formatDate, calculateReadTime } from '../utils';
-import type { TableOfContentsSection } from '../types';
+import { usePostDeteils } from '../hooks/usePostDeteils';
+import { formatDate } from '../utils';
 import styles from './BlogPostPage.module.css';
 
 export const BlogPostPage = () => {
   const { id } = useParams<{ id: string }>();
   const postId = id ? parseInt(id, 10) : undefined;
 
-  const { post, isLoading, error } = usePost(postId);
+  const { post, isLoading, error } = usePostDeteils(postId);
 
   // 로딩 상태
   if (isLoading) {
@@ -53,11 +52,6 @@ export const BlogPostPage = () => {
     );
   }
 
-  // 목차 동적 추출
-  const sections: TableOfContentsSection[] = post.content
-    ? extractTableOfContents(post.content)
-    : [];
-
   return (
     <div className={styles.page}>
       {/* 뒤로가기 */}
@@ -70,40 +64,38 @@ export const BlogPostPage = () => {
 
       {/* 게시글 헤더 */}
       <header className={styles.header}>
-        <h1 className={styles.title}>
-          <span className={styles.category}>[{post.category}]</span>
-          {post.title}
-        </h1>
+        <span className={styles.postType}>{post.postType}</span>
+        <h1 className={styles.title}>{post.title}</h1>
 
-        <div className={styles.meta}>
-          <div className={styles.tags}>
-            {post.tags.map((tag) => (
-              <span key={tag} className={styles.tag}>
-                {tag}
+        {/* 스택 */}
+        {post.stacks.length > 0 && (
+          <div className={styles.stacks}>
+            {post.stacks.map((stack) => (
+              <span key={stack} className={styles.stack}>
+                {stack}
               </span>
             ))}
           </div>
-          <div className={styles.info}>
-            <span>{formatDate(post.createdAt)}</span>
-            <span className={styles.dot}>·</span>
-            <span>{calculateReadTime(post.content)}</span>
+        )}
+
+        {/* 태그 */}
+        {post.tags.length > 0 && (
+          <div className={styles.tags}>
+            {post.tags.map((tag) => (
+              <span key={tag} className={styles.tag}>
+                #{tag}
+              </span>
+            ))}
           </div>
+        )}
+
+        {/* 메타 정보 */}
+        <div className={styles.meta}>
+          <span className={styles.author}>정현영</span>
+          <span className={styles.dot}>·</span>
+          <span>{formatDate(post.createdAt)}</span>
         </div>
       </header>
-
-      {/* 목차 */}
-      {sections.length > 0 && (
-        <nav className={styles.toc}>
-          <h2 className={styles.tocTitle}>목차</h2>
-          <ul className={styles.tocList}>
-            {sections.map((section) => (
-              <li key={section.id} className={styles.tocItem} data-level={section.level}>
-                <a href={`#${section.id}`}>{section.title}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
 
       {/* 게시글 본문 */}
       <article className={styles.content}>
@@ -119,7 +111,7 @@ export const BlogPostPage = () => {
           <Link to={`/post/${post.prev.id}`} className={styles.navLink}>
             <span className={styles.navDirection}>이전 글</span>
             <span className={styles.navTitle}>
-              <span className={styles.navCategory}>[{post.prev.category}]</span>
+              <span className={styles.navPostType}>[{post.prev.postType}]</span>
               {post.prev.title}
             </span>
           </Link>
@@ -131,7 +123,7 @@ export const BlogPostPage = () => {
           <Link to={`/post/${post.next.id}`} className={`${styles.navLink} ${styles.navNext}`}>
             <span className={styles.navDirection}>다음 글</span>
             <span className={styles.navTitle}>
-              <span className={styles.navCategory}>[{post.next.category}]</span>
+              <span className={styles.navPostType}>[{post.next.postType}]</span>
               {post.next.title}
             </span>
           </Link>

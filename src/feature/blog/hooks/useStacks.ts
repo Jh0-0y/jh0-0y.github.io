@@ -1,25 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getErrorMessage } from '@/services/core/api.error';
 import { stackApi } from '../api/stack.api';
-import type { PopularStack, StackWithCount } from '../api/stack.response';
+import type { StackResponse } from '../api/stack.response';
 import type { StackGroup } from '../types/stack.enums';
 
 interface UseStacksReturn {
-  // 데이터
-  popularStacks: PopularStack[];
-  groupedStacks: Record<StackGroup, StackWithCount[]> | null;
-
-  // 상태
+  stacks: StackResponse[];
+  groupedStacks: Record<StackGroup, StackResponse[]> | null;
   isLoading: boolean;
   error: string | null;
-
-  // 액션
   refetch: () => Promise<void>;
 }
 
 export const useStacks = (): UseStacksReturn => {
-  const [popularStacks, setPopularStacks] = useState<PopularStack[]>([]);
-  const [groupedStacks, setGroupedStacks] = useState<Record<StackGroup, StackWithCount[]> | null>(
+  const [stacks, setStacks] = useState<StackResponse[]>([]);
+  const [groupedStacks, setGroupedStacks] = useState<Record<StackGroup, StackResponse[]> | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
@@ -30,18 +25,25 @@ export const useStacks = (): UseStacksReturn => {
     setError(null);
 
     try {
-      const [popularRes, groupedRes] = await Promise.all([
-        stackApi.getPopularStacks(5),
-        stackApi.getGroupedStacks(),
-      ]);
+      const response = await stackApi.getAllStacks();
 
-      if (popularRes.success && popularRes.data) {
-        setPopularStacks(popularRes.data);
-      }
+      if (response.success && response.data) {
+        setStacks(response.data);
 
-      if (groupedRes.success && groupedRes.data) {
-        // 백엔드에서 groupedTags로 반환
-        setGroupedStacks(groupedRes.data.groupedTags);
+        // 그룹별로 정리
+        const grouped = response.data.reduce(
+          (acc, stack) => {
+            const group = stack.stackGroup as StackGroup;
+            if (!acc[group]) {
+              acc[group] = [];
+            }
+            acc[group].push(stack);
+            return acc;
+          },
+          {} as Record<StackGroup, StackResponse[]>
+        );
+
+        setGroupedStacks(grouped);
       }
     } catch (err) {
       setError(getErrorMessage(err));
@@ -56,7 +58,7 @@ export const useStacks = (): UseStacksReturn => {
   }, [fetchStacks]);
 
   return {
-    popularStacks,
+    stacks,
     groupedStacks,
     isLoading,
     error,

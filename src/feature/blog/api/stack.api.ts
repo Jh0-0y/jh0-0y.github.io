@@ -1,6 +1,6 @@
 import { apiClient } from '@/services/core/apiClient';
 import type { ApiResponse } from '@/services/core/api.response';
-import type { StackGroup } from './stack.enums';
+import type { StackGroup } from '../types/stack.enums';
 import type {
   StackResponse,
   StackWithCount,

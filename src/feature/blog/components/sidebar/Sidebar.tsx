@@ -1,8 +1,9 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { useStacks } from '../../hooks/useStacks';
+import { useStacksSidebar } from '../../hooks/useStacksSidebar';
 import { STACK_GROUP_LABELS, STACK_GROUP_ORDER } from '../../types/stack.enums';
 import { SearchBar } from './SearchBar';
 import styles from './Sidebar.module.css';
+import { LogoutButton } from '@/components/logoutButton/LogoutButton';
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -11,7 +12,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ isOpen = true, onClose }: SidebarProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { popularStacks, groupedStacks, isLoading } = useStacks();
+  const { popularStacks, groupedStacks, isLoading } = useStacksSidebar();
 
   // 현재 선택된 스택 (URL에서 읽기)
   const selectedStack = searchParams.get('stack');
@@ -64,6 +65,7 @@ export const Sidebar = ({ isOpen = true, onClose }: SidebarProps) => {
             hyunyoung.dev
           </Link>
           <p className={styles.subtitle}>Junior Backend Developer</p>
+          <LogoutButton />
         </div>
 
         {/* 검색 */}
