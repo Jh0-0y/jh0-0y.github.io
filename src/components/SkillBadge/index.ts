@@ -1,3 +1,5 @@
-export { default as SkillBadge } from './SkillBadge';
-export { SKILL_BADGES, getBadgeConfig } from './badgeData';
-export type { SkillBadgeName, BadgeConfig } from './badgeData';
+import type { SKILL_BADGES } from '..';
+import type { BadgeConfig } from './badgeData';
+export { SkillBadge } from './SkillBadge';
+export type SkillBadgeName = keyof typeof SKILL_BADGES;
+export type { BadgeConfig };

@@ -3,7 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import { getErrorMessage } from '@/services/core/api.error';
 import { postApi } from '../api/post.api';
 import type { PostListItem } from '../api/post.response';
-import type { PostType } from '../types';
+import type { PostType } from '../types/post.enums';
+
+const POST_TYPES: PostType[] = ['CORE', 'ARCHITECTURE', 'TROUBLESHOOTING', 'ESSAY'];
+
+const isPostType = (value: string | null): value is PostType => {
+  return value !== null && POST_TYPES.includes(value as PostType);
+};
 
 export interface PostsFilter {
   postType?: PostType;
@@ -50,8 +56,10 @@ export const usePosts = (initialFilter?: PostsFilter): UsePostsReturn => {
 
   // URL에서 필터 읽기
   const getFilterFromURL = useCallback((): PostsFilter => {
+    const postTypeParam = searchParams.get('postType');
+
     return {
-      postType: searchParams.get('postType') || initialFilter?.postType,
+      postType: isPostType(postTypeParam) ? postTypeParam : initialFilter?.postType,
       stack: searchParams.get('stack') || initialFilter?.stack,
       keyword: searchParams.get('keyword') || initialFilter?.keyword,
     };

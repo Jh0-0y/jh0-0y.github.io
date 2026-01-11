@@ -29,7 +29,7 @@ const iconSizeMap = {
   lg: 16,
 };
 
-const SkillBadge = ({ name, size = 'md' }: SkillBadgeProps) => {
+export const SkillBadge = ({ name, size = 'md' }: SkillBadgeProps) => {
   const config = getBadgeConfig(name);
 
   // 정의되지 않은 뱃지는 기본 스타일로 표시
@@ -65,5 +65,3 @@ const SkillBadge = ({ name, size = 'md' }: SkillBadgeProps) => {
     </span>
   );
 };
-
-export default SkillBadge;

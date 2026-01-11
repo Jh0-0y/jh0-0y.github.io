@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiGithub, FiExternalLink, FiFileText, FiUsers, FiUser, FiCalendar, FiTrendingUp, FiSun, FiMoon } from 'react-icons/fi';
+import { FiArrowLeft, FiGithub, FiExternalLink, FiFileText, FiUsers, FiUser, FiCalendar, FiTrendingUp } from 'react-icons/fi';
 
 import { SkillBadge } from '@/components';
 import styles from './ProjectDetailPage.module.css';

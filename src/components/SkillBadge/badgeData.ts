@@ -8,6 +8,15 @@ export interface BadgeConfig {
   iconPath?: string;    // 로컬 SVG 경로 (3순위)
 }
 
+// 뱃지 이름 목록 (자동완성/타입용)
+export type SkillBadgeName = keyof typeof SKILL_BADGES;
+
+// 뱃지 가져오기 헬퍼
+export const getBadgeConfig = (name: string): BadgeConfig | null => {
+  return SKILL_BADGES[name.toLowerCase()] || null;
+};
+
+
 // 모든 뱃지 정의
 export const SKILL_BADGES: Record<string, BadgeConfig> = {
   // ========== Frontend ==========
@@ -350,10 +359,3 @@ export const SKILL_BADGES: Record<string, BadgeConfig> = {
   },
 };
 
-// 뱃지 이름 목록 (자동완성/타입용)
-export type SkillBadgeName = keyof typeof SKILL_BADGES;
-
-// 뱃지 가져오기 헬퍼
-export const getBadgeConfig = (name: string): BadgeConfig | null => {
-  return SKILL_BADGES[name.toLowerCase()] || null;
-};

@@ -5,7 +5,7 @@ export {
 } from './blog.utils';
 
 export {
-  getTagGroupPriority,
-  sortTags,
-  sortTagNames,
-} from './tag.utils';
+  getStackGroupPriority,
+  sortStacks,
+  sortStackNames,
+} from './stack.utils';
