@@ -26,10 +26,16 @@ export const BlogHeader = ({ onSidebarToggle }: BlogHeaderProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 로고 클릭 - 사이드바 토글
+  // 로고 클릭 핸들러
   const handleLogoClick = () => {
-    if (onSidebarToggle) {
-      onSidebarToggle();
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+    
+    if (isMobile) {
+      // 모바일: 사이드바 토글
+      onSidebarToggle?.();
+    } else {
+      // 데스크탑: 홈으로 이동
+      navigate('/');
     }
   };
 

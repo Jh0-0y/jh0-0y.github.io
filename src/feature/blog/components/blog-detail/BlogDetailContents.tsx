@@ -5,7 +5,7 @@ interface BlogDetailContentsProps {
   /**
    * 서버에서 받은 Markdown 콘텐츠
    */
-  htmlContent: string;
+  markdownContent: string;
 }
 
 /**
@@ -14,10 +14,10 @@ interface BlogDetailContentsProps {
  * - 편집 불가능한 읽기 전용 모드
  * - S3 URL 기반 이미지/비디오/파일 표시
  */
-export const BlogDetailContents: React.FC<BlogDetailContentsProps> = ({ htmlContent }) => {
+export const BlogDetailContents: React.FC<BlogDetailContentsProps> = ({ markdownContent }) => {
   return (
     <div className={styles.wrapper}>
-      <Viewer content={htmlContent} className={styles.viewer} />
+      <Viewer content={markdownContent} className={styles.viewer} />
     </div>
   );
 };

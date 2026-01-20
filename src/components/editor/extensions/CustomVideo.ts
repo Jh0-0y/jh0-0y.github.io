@@ -76,10 +76,20 @@ export const CustomVideo = Node.create<VideoOptions>({
     ];
   },
 
+  // 수정: renderHTML에서 모든 속성을 명시적으로 포함
+  // 수정: 빈 요소가 아니도록 HTML 주석 추가
   renderHTML({ HTMLAttributes }) {
     return [
       'div',
-      mergeAttributes(HTMLAttributes, { 'data-type': 'custom-video' }),
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, { 
+        'data-type': 'custom-video',
+        // 수정: 속성들을 직접 HTML에 포함
+        'data-id': HTMLAttributes['data-id'],
+        'data-url': HTMLAttributes['data-url'],
+        'data-filename': HTMLAttributes['data-filename'],
+        'data-size': HTMLAttributes['data-size'],
+      }),
+      '<!--custom-video-->', // 수정: 빈 요소가 아니도록 주석 추가
     ];
   },
 

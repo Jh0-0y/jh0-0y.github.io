@@ -23,6 +23,8 @@
 .editorContent :global(.tiptap-editor) {
   padding: var(--spacing-4);
   min-height: 400px;
+  max-height: 800px;
+  overflow-y: auto;
   outline: none;
 }
 

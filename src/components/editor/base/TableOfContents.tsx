@@ -1,42 +1,30 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { RiListUnordered, RiCloseLine } from 'react-icons/ri';
 import styles from './TableOfContents.module.css';
 
-interface TocItem {
+export interface TocItem {
   id: string;
   title: string;
   level: number;
 }
 
 interface TableOfContentsProps {
-  htmlContent: string;
+  items: TocItem[];
 }
 
-export const TableOfContents = ({ htmlContent }: TableOfContentsProps) => {
+/**
+ * 목차 컴포넌트
+ * - props로 받은 목차 아이템을 UI로 렌더링
+ * - 스크롤 추적 및 하이라이트
+ * - 클릭 시 해당 섹션으로 스크롤
+ */
+export const TableOfContents = ({ items }: TableOfContentsProps) => {
   const [activeId, setActiveId] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
 
-  // HTML에서 H1, H2, H3 추출
-  const tocItems = useMemo(() => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlContent, 'text/html');
-    const headings = doc.querySelectorAll('h1, h2, h3'); // H3 추가
-
-    const items: TocItem[] = [];
-    headings.forEach((heading) => {
-      const level = parseInt(heading.tagName.substring(1));
-      const title = heading.textContent || '';
-      const id = heading.getAttribute('id') || title;
-
-      items.push({ id, title, level });
-    });
-
-    return items;
-  }, [htmlContent]);
-
   // 스크롤 추적
   useEffect(() => {
-    if (tocItems.length === 0) return;
+    if (items.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -52,8 +40,8 @@ export const TableOfContents = ({ htmlContent }: TableOfContentsProps) => {
       }
     );
 
-    // 모든 제목 요소 관찰
-    tocItems.forEach((item) => {
+    // 모든 heading 요소 관찰
+    items.forEach((item) => {
       const element = document.getElementById(item.id);
       if (element) {
         observer.observe(element);
@@ -61,13 +49,13 @@ export const TableOfContents = ({ htmlContent }: TableOfContentsProps) => {
     });
 
     return () => observer.disconnect();
-  }, [tocItems]);
+  }, [items]);
 
   // 목차 클릭 핸들러
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 100; // 헤더 높이만큼 오프셋
+      const offset = 100;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -103,13 +91,13 @@ export const TableOfContents = ({ htmlContent }: TableOfContentsProps) => {
   }, [isOpen]);
 
   // 목차가 없으면 렌더링하지 않음
-  if (tocItems.length === 0) {
+  if (items.length === 0) {
     return null;
   }
 
   return (
     <>
-      {/* 토글 버튼 - 항상 표시 */}
+      {/* 토글 버튼 */}
       <button
         type="button"
         className={styles.toggleButton}
@@ -151,7 +139,7 @@ export const TableOfContents = ({ htmlContent }: TableOfContentsProps) => {
         </div>
 
         <nav className={styles.tocNav}>
-          {tocItems.map((item) => (
+          {items.map((item) => (
             <button
               key={item.id}
               type="button"

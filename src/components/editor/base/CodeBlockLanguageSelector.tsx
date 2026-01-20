@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CODE_LANGUAGES } from '../constants/codeLanguages';
 import styles from './CodeBlockLanguageSelector.module.css';
 
 interface CodeBlockLanguageSelectorProps {
@@ -6,36 +7,13 @@ interface CodeBlockLanguageSelectorProps {
   onClose: () => void;
 }
 
-const LANGUAGES = [
-  { value: 'javascript', label: 'JavaScript' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'python', label: 'Python' },
-  { value: 'java', label: 'Java' },
-  { value: 'cpp', label: 'C++' },
-  { value: 'csharp', label: 'C#' },
-  { value: 'go', label: 'Go' },
-  { value: 'rust', label: 'Rust' },
-  { value: 'php', label: 'PHP' },
-  { value: 'ruby', label: 'Ruby' },
-  { value: 'swift', label: 'Swift' },
-  { value: 'kotlin', label: 'Kotlin' },
-  { value: 'html', label: 'HTML' },
-  { value: 'css', label: 'CSS' },
-  { value: 'sql', label: 'SQL' },
-  { value: 'bash', label: 'Bash' },
-  { value: 'json', label: 'JSON' },
-  { value: 'yaml', label: 'YAML' },
-  { value: 'markdown', label: 'Markdown' },
-  { value: 'plaintext', label: 'Plain Text' },
-];
-
 const CodeBlockLanguageSelector = ({
   onSelect,
   onClose,
 }: CodeBlockLanguageSelectorProps) => {
   const [search, setSearch] = useState('');
 
-  const filteredLanguages = LANGUAGES.filter((lang) =>
+  const filteredLanguages = CODE_LANGUAGES.filter((lang) =>
     lang.label.toLowerCase().includes(search.toLowerCase())
   );
 

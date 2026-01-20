@@ -1,18 +1,21 @@
 import { useParams } from 'react-router-dom';
 import { usePostDetails } from '@/feature/blog/hooks/post/usePostDeteils';
+import { useTocItems } from '@/components/editor/hooks/useTocItems'; // 추가
+import { TableOfContents } from '@/components/editor/base/TableOfContents';
 import { 
   ThumbnailBanner,
   BlogDetailHeader,
   BlogDetailContents,
   RelatedPosts,
-  TableOfContents
 } from '@/feature/blog/components/blog-detail';
 import styles from './BlogDetailPage.module.css';
 
 export const BlogDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
-
   const { post, isLoading, error } = usePostDetails(slug);
+  
+  // 추가: DOM에서 목차 추출
+  const tocItems = useTocItems('.tiptap-viewer');
 
   // 로딩 상태
   if (isLoading) {
@@ -65,17 +68,17 @@ export const BlogDetailPage = () => {
           createdAt={post.createdAt}
         />
 
-        {/* 게시글 본문 - Markdown을 읽기 전용으로 렌더링 */}
+        {/* 게시글 본문 */}
         <article className={styles.content}>
-          <BlogDetailContents htmlContent={post.content} />
+          <BlogDetailContents markdownContent={post.content} />
         </article>
 
         {/* 관련 게시글 */}
         <RelatedPosts relatedPosts={post.relatedPosts || []} />
       </div>
 
-      {/* 목차 */}
-      <TableOfContents htmlContent={post.content} />
+      {/* 목차 - 수정: items prop으로 전달 */}
+      <TableOfContents items={tocItems} />
     </div>
   );
 };

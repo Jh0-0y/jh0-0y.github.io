@@ -2,19 +2,28 @@ import { useNavigate } from 'react-router-dom';
 import { HiHome, HiPencilAlt, HiChat } from 'react-icons/hi';
 import styles from './ProfileCard.module.css';
 
-export const ProfileCard = () => {
+interface ProfileCardProps {
+  onNavigate?: () => void;
+}
+
+export const ProfileCard = ({ onNavigate }: ProfileCardProps) => {
   const navigate = useNavigate();
 
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    onNavigate?.(); // 모바일에서만 사이드바 닫기
+  };
+
   const handleHomeClick = () => {
-    navigate('/');
+    handleNavigation('/');
   };
 
   const handleWriteClick = () => {
-    navigate('/write');
+    handleNavigation('/write');
   };
 
   const handleGuestbookClick = () => {
-    navigate('/guestbook');
+    handleNavigation('/guestbook');
   };
 
   return (

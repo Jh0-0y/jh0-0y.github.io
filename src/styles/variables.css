@@ -59,7 +59,7 @@
   --article-sm: 800px;
   --article-md: 900px;
   --article-lg: 1100px;
-  --article-xl: 1200px;
+  --article-xl: 1024px;
 
   /* ===== Primary Colors ===== */
   --color-primary-light: #5fb6d9;

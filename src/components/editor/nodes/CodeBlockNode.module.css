@@ -1,0 +1,223 @@
+.codeBlockWrapper {
+  margin: var(--spacing-4) 0;
+}
+
+.codeBlock {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-md);
+}
+
+/* Mac 스타일 헤더 */
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-gray-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.windowButtons {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.windowButtons span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.btnClose {
+  background-color: #ff5f56;
+}
+
+.btnMinimize {
+  background-color: #ffbd2e;
+}
+
+.btnMaximize {
+  background-color: #27ca40;
+}
+
+/* 수정: 좌측 버튼과 우측 컨트롤 사이 공간 */
+.spacer {
+  flex: 1;
+}
+
+/* 언어 선택 */
+.languageSelect {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-code);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s;
+}
+
+.languageSelect:hover {
+  border-color: var(--color-border-hover);
+  background-color: var(--color-bg-surface);
+}
+
+.languageSelect:focus {
+  border-color: var(--color-primary-normal);
+}
+
+.languageSelect option {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+}
+
+/* 복사 버튼 */
+.copyButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copyButton:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-surface);
+  border-color: var(--color-border-hover);
+}
+
+.copyButton svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 코드 영역 */
+.pre {
+  margin: 0;
+  padding: var(--spacing-4);
+  overflow-x: auto;
+  font-family: var(--font-family-code);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  tab-size: 2;
+  background-color: #fafafa;
+  color: var(--color-text-primary);
+}
+
+.pre code {
+  font-family: inherit;
+  background: none !important;
+  padding: 0 !important;
+}
+
+/* Syntax Highlighting - Light Theme */
+.pre :global(.hljs-comment),
+.pre :global(.hljs-quote) {
+  color: #6a737d;
+  font-style: italic;
+}
+
+.pre :global(.hljs-keyword),
+.pre :global(.hljs-selector-tag),
+.pre :global(.hljs-subst) {
+  color: #d73a49;
+  font-weight: var(--font-weight-semibold);
+}
+
+.pre :global(.hljs-number),
+.pre :global(.hljs-literal),
+.pre :global(.hljs-variable),
+.pre :global(.hljs-template-variable),
+.pre :global(.hljs-tag .hljs-attr) {
+  color: #005cc5;
+}
+
+.pre :global(.hljs-string),
+.pre :global(.hljs-doctag) {
+  color: #032f62;
+}
+
+.pre :global(.hljs-title),
+.pre :global(.hljs-section),
+.pre :global(.hljs-selector-id) {
+  color: #6f42c1;
+  font-weight: var(--font-weight-semibold);
+}
+
+.pre :global(.hljs-type),
+.pre :global(.hljs-class .hljs-title) {
+  color: #6f42c1;
+}
+
+.pre :global(.hljs-tag),
+.pre :global(.hljs-name),
+.pre :global(.hljs-attribute) {
+  color: #22863a;
+  font-weight: var(--font-weight-normal);
+}
+
+.pre :global(.hljs-regexp),
+.pre :global(.hljs-link) {
+  color: #032f62;
+}
+
+.pre :global(.hljs-symbol),
+.pre :global(.hljs-bullet) {
+  color: #e36209;
+}
+
+.pre :global(.hljs-built_in),
+.pre :global(.hljs-builtin-name) {
+  color: #005cc5;
+}
+
+.pre :global(.hljs-meta) {
+  color: #6a737d;
+}
+
+.pre :global(.hljs-deletion) {
+  color: #b31d28;
+  background-color: #ffeef0;
+}
+
+.pre :global(.hljs-addition) {
+  color: #22863a;
+  background-color: #f0fff4;
+}
+
+.pre :global(.hljs-emphasis) {
+  font-style: italic;
+}
+
+.pre :global(.hljs-strong) {
+  font-weight: var(--font-weight-bold);
+}
+
+/* 스크롤바 스타일 */
+.pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.pre::-webkit-scrollbar-track {
+  background: var(--color-gray-light);
+}
+
+.pre::-webkit-scrollbar-thumb {
+  background: var(--color-gray-normal);
+  border-radius: var(--radius-sm);
+}
+
+.pre::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-medium);
+}

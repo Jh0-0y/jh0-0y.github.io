@@ -5,14 +5,15 @@ import Link from '@tiptap/extension-link';
 import Highlight from '@tiptap/extension-highlight';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
-import {Table} from '@tiptap/extension-table';
+import { Table } from '@tiptap/extension-table';
 import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import Placeholder from '@tiptap/extension-placeholder';
-import { CustomImage, CustomVideo, CustomFile } from '../extensions';
+import { CustomImage, CustomVideo, CustomFile, CustomCodeBlock } from '../extensions';
+import { CustomToc } from '../extensions'; // 추가
 import { htmlToMarkdown, markdownToHtml } from '../converter';
-import { uploadFile, extractFilesFromDrop, getFileMetadataType } from '../utils';
+import { uploadFile, extractFilesFromDrop } from '../utils';
 import type { EditorOptions, UseMyEditorReturn } from '../types';
 
 export const useMyEditor = ({
@@ -25,12 +26,9 @@ export const useMyEditor = ({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        codeBlock: {
-          HTMLAttributes: {
-            class: 'code-block',
-          },
-        },
+        codeBlock: false, // 기본 codeBlock 비활성화
       }),
+      CustomCodeBlock,
       Underline,
       Link.configure({
         openOnClick: mode === 'viewer',
@@ -71,6 +69,13 @@ export const useMyEditor = ({
       CustomImage,
       CustomVideo,
       CustomFile,
+      // 추가: TableOfContents Extension
+      CustomToc.configure({
+        getHeadings: (headings) => {
+          // 필요시 headings 데이터 활용
+          // 현재는 DOM에서 직접 읽으므로 사용 안 함
+        },
+      }),
     ],
     content: markdownToHtml(content),
     editable: mode === 'editor' && editable,
@@ -86,7 +91,6 @@ export const useMyEditor = ({
 
         event.preventDefault();
 
-        // 드롭 위치 계산
         const coordinates = view.posAtCoords({
           left: event.clientX,
           top: event.clientY,
@@ -94,7 +98,6 @@ export const useMyEditor = ({
 
         if (!coordinates) return true;
 
-        // 파일 업로드 및 삽입
         files.forEach(async (file) => {
           const result = await uploadFile(file);
 
@@ -102,26 +105,11 @@ export const useMyEditor = ({
             const { id, url, fileName, size, type } = result.data;
 
             if (type === 'IMAGE') {
-              editor?.commands.setImage({
-                id,
-                url,
-                fileName,
-                size,
-              });
+              editor?.commands.setImage({ id, url, fileName, size });
             } else if (type === 'VIDEO') {
-              editor?.commands.setVideo({
-                id,
-                url,
-                fileName,
-                size,
-              });
+              editor?.commands.setVideo({ id, url, fileName, size });
             } else {
-              editor?.commands.setFile({
-                id,
-                url,
-                fileName,
-                size,
-              });
+              editor?.commands.setFile({ id, url, fileName, size });
             }
           } else {
             alert(result.error || '파일 업로드에 실패했습니다.');
@@ -136,15 +124,14 @@ export const useMyEditor = ({
         const text = event.clipboardData?.getData('text/plain');
         if (!text) return false;
 
-        // 마크다운 패턴 감지
         const hasMarkdown =
-          /^#{1,6}\s/.test(text) || // 헤딩
-          /^\*\*.*\*\*/.test(text) || // Bold
-          /^\*.*\*/.test(text) || // Italic
-          /^\[.*\]\(.*\)/.test(text) || // Link
-          /^```/.test(text) || // Code block
-          /^>\s/.test(text) || // Blockquote
-          /^\|(.+)\|/.test(text); // Table (| ... | 형태)
+          /^#{1,6}\s/.test(text) ||
+          /^\*\*.*\*\*/.test(text) ||
+          /^\*.*\*/.test(text) ||
+          /^\[.*\]\(.*\)/.test(text) ||
+          /^```/.test(text) ||
+          /^>\s/.test(text) ||
+          /^\|(.+)\|/.test(text);
 
         if (hasMarkdown) {
           event.preventDefault();

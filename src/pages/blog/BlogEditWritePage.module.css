@@ -12,7 +12,7 @@
 
 .content {
   width: 100%;
-  max-width: 1140px;
+  max-width: var(--article-xl);
   margin: 0 auto;
   padding: 0 var(--spacing-8);
 }

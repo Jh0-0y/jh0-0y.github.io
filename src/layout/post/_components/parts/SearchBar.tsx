@@ -3,14 +3,24 @@ import { useEffect, useRef } from 'react';
 import styles from './SearchBar.module.css';
 import { useSearch } from '@/feature/blog/hooks/post/useSearch';
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  onSearch?: () => void;
+}
+
+export const SearchBar = ({ onSearch }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { inputValue, setInputValue, handleSearch, clearSearch } = useSearch();
+
+  // 검색 실행 (Enter 키)
+  const executeSearch = () => {
+    handleSearch();
+    onSearch?.(); // 모바일에서만 사이드바 닫기
+  };
 
   // Enter 키 처리
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleSearch();
+      executeSearch();
     }
     if (e.key === 'Escape') {
       clearSearch();
