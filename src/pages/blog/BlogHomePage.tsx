@@ -32,33 +32,6 @@ export const BlogHomePage = () => {
     navigate(keyword ? `${basePath}?q=${keyword}` : basePath);
   };
 
-  // 로딩 상태
-  if (isLoading && posts.length === 0) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loadingWrapper}>
-          <div className={styles.loading}>
-            <div className={styles.spinner} />
-            <p>포스트를 불러오는 중...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // 에러 상태
-  if (error) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.errorWrapper}>
-          <div className={styles.error}>
-            <p>{error}</p>
-            <button onClick={() => window.location.reload()}>다시 시도</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.container}>

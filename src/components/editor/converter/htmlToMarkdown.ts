@@ -27,6 +27,7 @@ const turndownService = new TurndownService({
 
 /**
  * 커스텀 이미지 노드 변환 규칙 - 최우선 순위
+ * 수정: fileName을 URL 인코딩하여 공백 문제 해결
  */
 turndownService.addRule('customImage', {
   filter: function(node) {
@@ -46,12 +47,16 @@ turndownService.addRule('customImage', {
     const fileName = element.getAttribute('data-filename');
     const size = element.getAttribute('data-size');
 
-    return `\n::image[id=${id} url=${url} fileName=${fileName} size=${size}]::\n`;
+    // fileName을 URL 인코딩하여 공백 문제 해결
+    const encodedFileName = fileName ? encodeURIComponent(fileName) : '';
+
+    return `\n::image[id=${id} url=${url} fileName=${encodedFileName} size=${size}]::\n`;
   },
 });
 
 /**
  * 커스텀 비디오 노드 변환 규칙
+ * 수정: fileName을 URL 인코딩
  */
 turndownService.addRule('customVideo', {
   filter: function(node) {
@@ -67,12 +72,15 @@ turndownService.addRule('customVideo', {
     const fileName = element.getAttribute('data-filename');
     const size = element.getAttribute('data-size');
 
-    return `\n::video[id=${id} url=${url} fileName=${fileName} size=${size}]::\n`;
+    const encodedFileName = fileName ? encodeURIComponent(fileName) : '';
+
+    return `\n::video[id=${id} url=${url} fileName=${encodedFileName} size=${size}]::\n`;
   },
 });
 
 /**
  * 커스텀 파일 노드 변환 규칙
+ * 수정: fileName을 URL 인코딩
  */
 turndownService.addRule('customFile', {
   filter: function(node) {
@@ -88,7 +96,9 @@ turndownService.addRule('customFile', {
     const fileName = element.getAttribute('data-filename');
     const size = element.getAttribute('data-size');
 
-    return `\n::file[id=${id} url=${url} fileName=${fileName} size=${size}]::\n`;
+    const encodedFileName = fileName ? encodeURIComponent(fileName) : '';
+
+    return `\n::file[id=${id} url=${url} fileName=${encodedFileName} size=${size}]::\n`;
   },
 });
 
