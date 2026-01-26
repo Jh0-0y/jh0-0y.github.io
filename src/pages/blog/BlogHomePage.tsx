@@ -1,6 +1,6 @@
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { usePosts } from '@/feature/blog/hooks/post/usePosts';
-import type { PostType } from '@/feature/blog/types/post';
+import type { PostType } from '@/api/post/types';
 import { TypingBanner } from '@/feature/blog/components/blog-home/TypingBanner';
 import { 
   BlogHomeFilter,
@@ -13,7 +13,7 @@ export const BlogHomePage = () => {
   const navigate = useNavigate();
   const params = useParams<{ postType?: string; group?: string; stack?: string }>();
   const [searchParams] = useSearchParams();
-  const { posts, pagination, isLoading, error, filter, setPage } = usePosts();
+  const { posts, pagination, filter, setPage } = usePosts();
 
   const currentPostType = filter.postType || 'ALL';
 

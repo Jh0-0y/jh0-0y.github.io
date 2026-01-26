@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useStacksQuery } from '@/api/stack/queries';
 import { useCreateStackMutation, useDeleteStackMutation } from '@/api/stack/mutations';
-import type { StackGroup, StackResponse } from '@/feature/blog/types/stack';
+import type { StackGroup, StackResponse } from '@/api/stack/types';
 
 /**
  * 스택 관리용 훅 (CRUD)
