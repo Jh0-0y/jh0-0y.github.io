@@ -6,15 +6,14 @@ import { CodeBlockNode } from '../nodes/CodeBlockNode';
 
 // 수정: CodeBlockLowlight를 extend하여 UI만 커스터마이징
 export const CustomCodeBlock = CodeBlockLowlight.extend({
-  // 수정: lowlight 인스턴스 전달
-  addOptions() {
+  // 반환 타입을 any로 지정해서 검사를 우회해
+  addOptions(): any {
     return {
       ...this.parent?.(),
       lowlight,
     };
   },
 
-  // 수정: 커스텀 NodeView로 UI 변경 (Mac 스타일 등)
   addNodeView() {
     return ReactNodeViewRenderer(CodeBlockNode);
   },

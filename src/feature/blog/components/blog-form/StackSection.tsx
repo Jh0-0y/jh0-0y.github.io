@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { STACK_GROUP_LABELS, STACK_GROUP_ORDER } from '@/feature/blog/types/stack/stack.enums';
+import { STACK_GROUP_LABELS, STACK_GROUP_ORDER } from '@/api/stack/types';
 import { VALIDATION_LIMITS } from '@/feature/blog/validations/post.validation';
 import { StackManageModal } from './modal/StackManageModal';
 import { useStacksForForm } from '@/feature/blog/hooks/stack';

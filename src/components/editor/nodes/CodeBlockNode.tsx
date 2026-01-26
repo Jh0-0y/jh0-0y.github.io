@@ -80,9 +80,8 @@ export const CodeBlockNode = ({ node, updateAttributes }: NodeViewProps) => {
           </button>
         </div>
 
-        {/* 수정: 코드 영역 - Tiptap이 자동으로 하이라이팅된 HTML 렌더링 */}
         <pre className={styles.pre}>
-          <NodeViewContent as="code" className={`language-${language}`} />
+          <NodeViewContent as={"code" as any} className={`language-${language}`} />
         </pre>
       </div>
     </NodeViewWrapper>

@@ -1,16 +1,16 @@
 import { useState, useCallback } from 'react';
-import { useToast } from '@/components/toast/useToast';
+import { useToast } from '@/shared/toast/useToast';
 import { fileApi } from '@/api/file/services/file.api';
-import type { PostFileUploadResponse } from '@/feature/blog/types/file/file.response';
+import type { FileUploadResponse } from '@/api/file/types';
 
 export interface UseContentFilesReturn {
   // 상태
-  uploadedFiles: PostFileUploadResponse[];
+  uploadedFiles: FileUploadResponse[];
   isUploading: boolean;
   uploadError: string | null;
   
   // 액션
-  uploadFile: (file: File) => Promise<PostFileUploadResponse | null>;
+  uploadFile: (file: File) => Promise<FileUploadResponse | null>;
   removeFile: (fileId: number) => void;
   clearFiles: () => void;
   
@@ -32,13 +32,13 @@ const ALLOWED_TYPES = [
 export const useContentFiles = (): UseContentFilesReturn => {
   const toast = useToast();
   
-  const [uploadedFiles, setUploadedFiles] = useState<PostFileUploadResponse[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<FileUploadResponse[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   // 파일 업로드
   const uploadFile = useCallback(
-    async (file: File): Promise<PostFileUploadResponse | null> => {
+    async (file: File): Promise<FileUploadResponse | null> => {
       // 파일 타입 검증
       if (!ALLOWED_TYPES.includes(file.type)) {
         const errorMsg = '지원하지 않는 파일 형식입니다';
@@ -59,7 +59,7 @@ export const useContentFiles = (): UseContentFilesReturn => {
       setUploadError(null);
 
       try {
-        const response = await fileApi.uploadPostFile(file);
+        const response = await fileApi.uploadFile(file);
         
         if (response.success) {
           const uploadedFile = response.data;

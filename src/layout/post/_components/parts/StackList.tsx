@@ -10,9 +10,8 @@ import {
   HiOutlineTerminal,
   HiOutlineDotsHorizontal,
 } from 'react-icons/hi';
-import { STACK_GROUP_LABELS, STACK_GROUP_ORDER } from '@/feature/blog/types/stack/stack.enums';
-import type { StackGroup } from '@/feature/blog/types/stack/stack.enums';
 
+import { STACK_GROUP_LABELS, STACK_GROUP_ORDER, type StackGroup } from '@/api/stack/types';
 import styles from './StackList.module.css';
 import { useStacksSidebar } from '@/feature/blog/hooks/stack/useStacksSidebar';
 

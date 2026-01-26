@@ -1,5 +1,4 @@
 import { usePublicPostDetailQuery } from '@/api/post/queries';
-import { getErrorMessage } from '@/api/core';
 
 /**
  * 게시글 상세 조회 훅

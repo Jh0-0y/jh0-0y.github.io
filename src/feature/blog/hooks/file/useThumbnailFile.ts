@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useToast } from '@/components/toast/useToast';
+import { useToast } from '@/shared/toast/useToast';
 
 export interface UseThumbnailFileReturn {
   // 상태
@@ -11,9 +11,6 @@ export interface UseThumbnailFileReturn {
   setThumbnailFile: (file: File | undefined) => void;
   setRemoveThumbnail: (remove: boolean) => void;
   clearThumbnail: () => void;
-  
-  // 유틸
-  hasChanges: (originalUrl: string | null) => boolean;
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -76,21 +73,12 @@ export const useThumbnailFile = (): UseThumbnailFileReturn => {
     setRemoveThumbnailState(false);
   }, []);
 
-  // 변경사항 확인
-  const hasChanges = useCallback(
-    (originalUrl: string | null): boolean => {
-      return thumbnailFile !== undefined || removeThumbnail === true;
-    },
-    [thumbnailFile, removeThumbnail]
-  );
-
   return {
     thumbnailFile,
     thumbnailPreviewUrl,
     removeThumbnail,
     setThumbnailFile,
     setRemoveThumbnail,
-    clearThumbnail,
-    hasChanges,
+    clearThumbnail
   };
 };
