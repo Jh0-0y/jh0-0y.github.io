@@ -22,7 +22,7 @@ const generateHeadingId = (text: string): string => {
 const convertFileTag = (markdown: string): string => {
   return markdown.replace(
     FILE_TAG_PATTERN,
-    (match, id, url, encodedFileName, size, contentType) => {
+    (_match, id, url, encodedFileName, size, contentType) => {
       const fileName = decodeURIComponent(encodedFileName);
       return `<div data-type="custom-file" data-id="${id}" data-url="${url}" data-filename="${fileName}" data-size="${size}" data-contenttype="${contentType}"><!--custom-file--></div>`;
     }

@@ -76,7 +76,7 @@ export const useMyEditor = ({
       attributes: {
         class: mode === 'editor' ? 'tiptap-editor' : 'tiptap-viewer',
       },
-      handleDrop: (view, event, slice, moved) => {
+      handleDrop: (view, event ) => {
         if (mode !== 'editor') return false;
 
         const files = extractFilesFromDrop(event.dataTransfer);
@@ -115,7 +115,7 @@ export const useMyEditor = ({
 
         return true;
       },
-      handlePaste: (view, event) => {
+      handlePaste: (_view, event) => {
         if (mode !== 'editor') return false;
 
         const text = event.clipboardData?.getData('text/plain');

@@ -7,7 +7,7 @@ const turndownService = new TurndownService({
   bulletListMarker: '*',
   emDelimiter: '*',
   strongDelimiter: '**',
-  blankReplacement: function (content, node) {
+  blankReplacement: function (_content, node) {
     const element = node as HTMLElement;
     const dataType = element.getAttribute('data-type');
 
@@ -29,7 +29,7 @@ turndownService.addRule('customFile', {
       node.getAttribute('data-type') === 'custom-file'
     );
   },
-  replacement: function (content, node) {
+  replacement: function (_content, node) {
     const element = node as HTMLElement;
     const id = element.getAttribute('data-id');
     const url = element.getAttribute('data-url');
@@ -83,7 +83,7 @@ turndownService.addRule('tiptapTableCleanup', {
       (node.classList.contains('tiptap-table') || node.hasAttribute('style'))
     );
   },
-  replacement: function (content, node) {
+  replacement: function (_content, node) {
     const rows: string[] = [];
     const table = node as HTMLTableElement;
 
