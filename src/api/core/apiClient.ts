@@ -5,7 +5,7 @@ import { getErrorMessage } from './api.error';
 import type { ErrorResponse } from './api.response';
 import { _getLoadingStore } from '@/shared/loading/useLoading';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://sealog-api.kro.kr/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://sealog-api.o-r.kr/api';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
